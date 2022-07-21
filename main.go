@@ -11,11 +11,12 @@ func main() {
 	fmt.Println("cek")
 	router := gin.Default()
 
-	router.GET("/", rootHandler)
-	router.GET("/player", playerHandler)
-	router.GET("/game/:id", gameHandler)
-	router.GET("/query", queryHandler)
-	router.POST("/game", postGameHandler)
+	v1 := router.Group("/v1")
+	v1.GET("/", rootHandler)
+	v1.GET("/player", playerHandler)
+	v1.GET("/game/:id", gameHandler)
+	v1.GET("/query", queryHandler)
+	v1.POST("/game", postGameHandler)
 
 	router.Run()
 }
@@ -56,7 +57,9 @@ func postGameHandler(c *gin.Context) {
 			pesanErrors = append(pesanErrors, pesanError)
 
 		}
-		c.JSON(http.StatusBadRequest, pesanErrors) //biar kalo error servernya ga mati
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": pesanErrors,
+		}) //biar kalo error servernya ga mati
 		return
 	}
 
