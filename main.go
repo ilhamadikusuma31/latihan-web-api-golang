@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 )
 
@@ -42,22 +41,22 @@ func gameHandler(context *gin.Context) {
 }
 
 type gameInput struct {
-	Judul    string
-	Harga    int
-	SubJudul string `json:"sub_judul"`
+	Judul string `json:"judul" binding:"required"`
+	Harga int    `json:"harga" binding:"required"`
 }
 
 func postGameHandler(c *gin.Context) {
 	var gi gameInput
 	err := c.ShouldBindJSON(&gi)
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(http.StatusBadRequest, err) //biar kalo error servernya ga mati
+		//log.Error(err)
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"judul":     gi.Judul,
-		"harga":     gi.Harga,
-		"sub_judul": gi.SubJudul,
+		"judul": gi.Judul,
+		"harga": gi.Harga,
 	})
 
 }
