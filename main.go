@@ -50,14 +50,14 @@ func postGameHandler(c *gin.Context) {
 	var gi gameInput
 	err := c.ShouldBindJSON(&gi)
 	if err != nil {
-
+		pesanErrors := []string{}
 		for _, j := range err.(validator.ValidationErrors) {
 			pesanError := fmt.Sprintf("Error di %s, kondisi: %s", j.Field(), j.ActualTag())
-			c.JSON(http.StatusBadRequest, pesanError) //biar kalo error servernya ga mati
-			return
+			pesanErrors = append(pesanErrors, pesanError)
 
 		}
-
+		c.JSON(http.StatusBadRequest, pesanErrors) //biar kalo error servernya ga mati
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
