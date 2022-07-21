@@ -12,6 +12,9 @@ func main() {
 
 	router.GET("/", rootHandler)
 	router.GET("/player", playerHandler)
+	router.GET("/game/:id", gameHandler)
+	router.GET("/query", queryHandler)
+
 	router.Run()
 }
 
@@ -26,5 +29,18 @@ func playerHandler(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"id":    "20",
 		"uname": "hamadi",
+	})
+}
+
+func gameHandler(context *gin.Context) {
+	tangkapId := context.Param("id")
+	context.JSON(http.StatusOK, gin.H{
+		"id": tangkapId,
+	})
+}
+func queryHandler(context *gin.Context) {
+	tangkapQuery := context.Query("judul")
+	context.JSON(http.StatusOK, gin.H{
+		"judul": tangkapQuery,
 	})
 }
