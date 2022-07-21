@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -14,13 +15,14 @@ func main() {
 	router.GET("/player", playerHandler)
 	router.GET("/game/:id", gameHandler)
 	router.GET("/query", queryHandler)
+	router.POST("/game", postGameHandler)
 
 	router.Run()
 }
 
 func rootHandler(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
-		"nama": "ilham adikuusuma",
+		"nama": "ilham adikusuma",
 		"nim":  "202410103034",
 	})
 }
@@ -37,6 +39,27 @@ func gameHandler(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"id": tangkapId,
 	})
+}
+
+type gameInput struct {
+	Judul    string
+	Harga    int
+	SubJudul string `json:"sub_judul"`
+}
+
+func postGameHandler(c *gin.Context) {
+	var gi gameInput
+	err := c.ShouldBindJSON(&gi)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"judul":     gi.Judul,
+		"harga":     gi.Harga,
+		"sub_judul": gi.SubJudul,
+	})
+
 }
 func queryHandler(context *gin.Context) {
 	tangkapQuery := context.Query("judul")
