@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 )
 
@@ -49,9 +50,14 @@ func postGameHandler(c *gin.Context) {
 	var gi gameInput
 	err := c.ShouldBindJSON(&gi)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err) //biar kalo error servernya ga mati
-		//log.Error(err)
-		return
+
+		for _, j := range err.(validator.ValidationErrors) {
+			pesanError := fmt.Sprintf("Error di %s, kondisi: %s", j.Field(), j.ActualTag())
+			c.JSON(http.StatusBadRequest, pesanError) //biar kalo error servernya ga mati
+			return
+
+		}
+
 	}
 
 	c.JSON(http.StatusOK, gin.H{
