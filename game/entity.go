@@ -2,12 +2,12 @@ package game
 
 import "time"
 
-type game struct {
-	id          string
-	judul       string
-	tahun_rilis int8
-	harga       int
-	genre       string
-	created_at  time.Time
-	update_at   time.Time
+type Game struct {
+	Id          string
+	Judul       string
+	Tahun_rilis int8
+	Harga       int
+	Genre       string
+	Created_at  time.Time
+	Update_at   time.Time
 }

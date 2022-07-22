@@ -6,18 +6,20 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
+	"web-api-golang/game"
 	"web-api-golang/handler"
 )
 
 func main() {
-	dsn := "root:@tcp(127.0.0.1:3306)/pustaka-api?charset=utf8mb4&parseTime=True&loc=Local"
-	_, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	dsn := "root:@tcp(127.0.0.1:3306)/game-pustaka-api?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	fmt.Println("database berhasil konek")
+
+	db.AutoMigrate(&game.Game{})
 
 	router := gin.Default()
 	v1 := router.Group("/v1")
