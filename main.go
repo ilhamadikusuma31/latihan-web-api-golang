@@ -21,6 +21,27 @@ func main() {
 
 	db.AutoMigrate(&game.Game{})
 
+	//CREATE
+	//objek baru
+	//game := game.Game{}
+	//game.Judul = "uncharted"
+	//game.TahunRilis = 2012
+	//game.Harga = 400000
+	//game.Genre = "action"
+	//err = db.Create(&game).Error
+	//if err != nil {
+	//	fmt.Println("gagal nambahin")
+	//}
+
+	//READ
+	var gim game.Game
+	err = db.Debug().First(&gim, 2).Error
+	if err != nil {
+		fmt.Println("tidak ada data")
+	}
+	fmt.Println("\nJudul: ", gim.Judul)
+	fmt.Println("\nHarga: ", gim.Harga)
+
 	router := gin.Default()
 	v1 := router.Group("/v1")
 	v1.GET("/", handler.RootHandler)
