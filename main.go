@@ -52,7 +52,15 @@ func main() {
 	//	fmt.Println("error updating")
 	//}
 	//gim.Judul = "Gta 5"
-	//db.Save(&gim)
+	//db.Save(&
+
+	//===DELETE===
+	var gim game.Game
+	err = db.Debug().Where("id=?", 2).First(&gim).Error
+	if err != nil {
+		fmt.Println("error delete")
+	}
+	db.Delete(&gim)
 
 	router := gin.Default()
 	v1 := router.Group("/v1")
