@@ -1,0 +1,44 @@
+	fmt.Println("database berhasil konek")
+
+	db.AutoMigrate(&game.Game{})
+
+	//===CREATE===
+	//game := game.Game{}
+	//game.Judul = "uncharted"
+	//game.TahunRilis = 2012
+	//game.Harga = 400000
+	//game.Genre = "action"
+	//err = db.Create(&game).Error
+	//if err != nil {
+	//	fmt.Println("gagal nambahin")
+	//}
+
+	//===READ===
+	//var gims []game.Game
+	//err = db.Debug().Find(&gims).Error
+	//if err != nil {
+	//	fmt.Println("tidak ada data")
+	//}
+	//
+	//for _, g := range gims {
+	//	fmt.Println("\nJudul: ", g.Judul)
+	//	fmt.Println("\nHarga: ", g.Harga)
+	//
+	//}
+
+	//===UPDATE===
+	//var gim game.Game
+	//err = db.Debug().Where("id = ?", 1).First(&gim).Error
+	//if err != nil {
+	//	fmt.Println("error updating")
+	//}
+	//gim.Judul = "Gta 5"
+	//db.Save(&
+
+	//===DELETE===
+	//var gim game.Game
+	//err = db.Debug().Where("id=?", 2).First(&gim).Error
+	//if err != nil {
+	//	fmt.Println("error delete")
+	//}
+	//db.Delete(&gim)

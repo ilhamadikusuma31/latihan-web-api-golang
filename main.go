@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -17,50 +16,22 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("database berhasil konek")
-
-	db.AutoMigrate(&game.Game{})
-
-	//===CREATE===
-	//game := game.Game{}
-	//game.Judul = "uncharted"
-	//game.TahunRilis = 2012
-	//game.Harga = 400000
-	//game.Genre = "action"
-	//err = db.Create(&game).Error
+	gimObj := game.NewRepository(db)
+	//gim, err := gimObj.FindAll()
 	//if err != nil {
-	//	fmt.Println("gagal nambahin")
+	//	fmt.Println("gagal")
+	//}
+	//for _, g := range gim {
+	//	fmt.Println(g.Harga)
 	//}
 
-	//===READ===
-	//var gims []game.Game
-	//err = db.Debug().Find(&gims).Error
-	//if err != nil {
-	//	fmt.Println("tidak ada data")
-	//}
-	//
-	//for _, g := range gims {
-	//	fmt.Println("\nJudul: ", g.Judul)
-	//	fmt.Println("\nHarga: ", g.Harga)
-	//
-	//}
-
-	//===UPDATE===
-	//var gim game.Game
-	//err = db.Debug().Where("id = ?", 1).First(&gim).Error
-	//if err != nil {
-	//	fmt.Println("error updating")
-	//}
-	//gim.Judul = "Gta 5"
-	//db.Save(&
-
-	//===DELETE===
-	var gim game.Game
-	err = db.Debug().Where("id=?", 2).First(&gim).Error
-	if err != nil {
-		fmt.Println("error delete")
+	gim := game.Game{
+		Judul:      "watch dog",
+		TahunRilis: 2015,
+		Harga:      3000,
+		Genre:      "",
 	}
-	db.Delete(&gim)
+	gimObj.Create(gim)
 
 	router := gin.Default()
 	v1 := router.Group("/v1")
