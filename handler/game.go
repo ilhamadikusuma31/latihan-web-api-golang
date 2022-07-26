@@ -55,14 +55,8 @@ func (h *gameHandler) GetGames(c *gin.Context) {
 
 	var penampung []game.GameResponse
 	for _, j := range gims {
-		br := game.GameResponse{
-			ID:         j.ID,
-			Judul:      j.Judul,
-			TahunRilis: j.TahunRilis,
-			Harga:      j.Harga,
-			Genre:      j.Genre,
-		}
-		penampung = append(penampung, br)
+		gr := convertkegameresponse(j)
+		penampung = append(penampung, gr)
 
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -81,13 +75,7 @@ func (h *gameHandler) GetGame(c *gin.Context) {
 		})
 	}
 
-	gimResponse := game.GameResponse{
-		ID:         gim.ID,
-		Judul:      gim.Judul,
-		TahunRilis: gim.TahunRilis,
-		Harga:      gim.Harga,
-		Genre:      gim.Genre,
-	}
+	gimResponse := convertkegameresponse(gim)
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": gimResponse,
@@ -123,4 +111,15 @@ func (h *gameHandler) PostGameHandler(c *gin.Context) {
 		"data": gim,
 	})
 
+}
+
+func convertkegameresponse(g game.Game) game.GameResponse {
+
+	return game.GameResponse{
+		ID:         g.ID,
+		Judul:      g.Judul,
+		TahunRilis: g.TahunRilis,
+		Harga:      g.Harga,
+		Genre:      g.Genre,
+	}
 }
