@@ -7,6 +7,7 @@ type Repository interface {
 	FindById(ID int) (Game, error)
 	Create(gim Game) (Game, error)
 	Update(gim Game) (Game, error)
+	Delete(gim Game) (Game, error)
 }
 
 type repository struct {
@@ -36,5 +37,10 @@ func (r *repository) Create(gim Game) (Game, error) {
 
 func (r *repository) Update(gim Game) (Game, error) {
 	err := r.db.Save(&gim).Error
+	return gim, err
+}
+
+func (r *repository) Delete(gim Game) (Game, error) {
+	err := r.db.Delete(&gim).Error
 	return gim, err
 }

@@ -144,6 +144,24 @@ func (h *gameHandler) UpdateGame(c *gin.Context) {
 
 }
 
+func (h *gameHandler) DeleteGame(c *gin.Context) {
+
+	idStr := c.Param("id")
+	id, _ := strconv.Atoi(idStr) //convert jadi id
+	gim, err := h.gs.S_Delete(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": err,
+		}) //biar kalo error servernya ga mati
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": gim,
+	})
+
+}
+
 func convertkegameresponse(g game.Game) game.GameResponse {
 
 	return game.GameResponse{

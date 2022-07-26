@@ -5,6 +5,7 @@ type Service interface {
 	S_FindById(S_ID int) (Game, error)
 	S_Create(S_gimR GameRequest) (Game, error)
 	S_Update(id int, S_gimR GameRequest) (Game, error)
+	S_Delete(id int) (Game, error)
 }
 
 type service struct {
@@ -38,6 +39,12 @@ func (s *service) S_Update(param1 int, param2 GameRequest) (Game, error) {
 	penampung.Genre = param2.Genre
 	penampung.TahunRilis = param2.TahunRilis
 	gim, err := s.Rep.Update(penampung)
+	return gim, err
+}
+
+func (s *service) S_Delete(param1 int) (Game, error) {
+	penampung, err := s.Rep.FindById(param1)
+	gim, err := s.Rep.Delete(penampung)
 	return gim, err
 }
 

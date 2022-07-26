@@ -32,6 +32,7 @@ func main() {
 	v1.GET("/game/:id", obj.GetGame)
 	v1.POST("/game", obj.PostGameHandler)
 	v1.PUT("/game/:id", obj.UpdateGame)
+	v1.DELETE("/game/:id", obj.DeleteGame)
 
 	router.Run()
 
