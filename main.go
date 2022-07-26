@@ -16,16 +16,19 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	//bikin table + fitur crud
 	gimRepo := game.NewRepository(db)
+
+	//bikin fitur crud
 	gimService := game.NewService(gimRepo)
+
+	//bikin handler (route) untuk game
 	obj := handler.NewGameHandler(gimService)
 
 	router := gin.Default()
 	v1 := router.Group("/v1")
-	v1.GET("/", obj.RootHandler)
-	v1.GET("/developer", obj.DeveloperHandler)
-	v1.GET("/game/:id", obj.GameHandler)
-	v1.GET("/query", obj.QueryHandler)
+	v1.GET("/game", obj.GetGames)
 	v1.POST("/game", obj.PostGameHandler)
 
 	router.Run()

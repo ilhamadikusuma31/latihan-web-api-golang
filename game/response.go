@@ -1,6 +1,6 @@
 package game
 
-type GameRequest struct {
+type GameResponse struct {
 	ID         int    `json:"id"`
 	Judul      string `json:"judul" binding:"required"`
 	TahunRilis int    `json:"tahun_rilis" binding:"required,number"`
