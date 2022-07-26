@@ -16,30 +16,24 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	gimObj := game.NewRepository(db)
-	//gim, err := gimObj.FindAll()
-	//if err != nil {
-	//	fmt.Println("gagal")
-	//}
-	//for _, g := range gim {
-	//	fmt.Println(g.Harga)
-	//}
-
-	gim := game.Game{
-		Judul:      "watch dog",
-		TahunRilis: 2015,
-		Harga:      3000,
-		Genre:      "",
-	}
-	gimObj.Create(gim)
+	gimRepo := game.NewRepository(db)
+	gimService := game.NewService(gimRepo)
+	obj := handler.NewGameHandler(gimService)
 
 	router := gin.Default()
 	v1 := router.Group("/v1")
-	v1.GET("/", handler.RootHandler)
-	v1.GET("/developer", handler.DeveloperHandler)
-	v1.GET("/game/:id", handler.GameHandler)
-	v1.GET("/query", handler.QueryHandler)
-	v1.POST("/game", handler.PostGameHandler)
+	v1.GET("/", obj.RootHandler)
+	v1.GET("/developer", obj.DeveloperHandler)
+	v1.GET("/game/:id", obj.GameHandler)
+	v1.GET("/query", obj.QueryHandler)
+	v1.POST("/game", obj.PostGameHandler)
 
 	router.Run()
+
+	//main
+	//handler
+	//service
+	//repository
+	//db
+	//mysql
 }

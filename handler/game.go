@@ -8,38 +8,45 @@ import (
 	"web-api-golang/game"
 )
 
-//nama func jadiin kapital biar public
-func RootHandler(context *gin.Context) {
+type gameHandler struct {
+	gs game.Service
+}
+
+func NewGameHandler(param game.Service) *gameHandler {
+	return &gameHandler{param}
+}
+
+func (h *gameHandler) RootHandler(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"nama": "ilham adikusuma",
 		"nim":  "202410103034",
 	})
 }
 
-func DeveloperHandler(context *gin.Context) {
+func (h *gameHandler) DeveloperHandler(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"id":    "20",
 		"uname": "konami",
 	})
 }
 
-func GameHandler(context *gin.Context) {
+func (h *gameHandler) GameHandler(context *gin.Context) {
 	tangkapId := context.Param("id")
 	context.JSON(http.StatusOK, gin.H{
 		"id": tangkapId,
 	})
 }
 
-func QueryHandler(context *gin.Context) {
+func (h *gameHandler) QueryHandler(context *gin.Context) {
 	tangkapQuery := context.Query("judul")
 	context.JSON(http.StatusOK, gin.H{
 		"judul": tangkapQuery,
 	})
 }
 
-func PostGameHandler(c *gin.Context) {
-	var gi game.GameInput
-	err := c.ShouldBindJSON(&gi)
+func (h *gameHandler) PostGameHandler(c *gin.Context) {
+	var gr game.GameRequest
+	err := c.ShouldBindJSON(&gr)
 	if err != nil {
 		pesanErrors := []string{}
 		for _, j := range err.(validator.ValidationErrors) {
@@ -53,9 +60,16 @@ func PostGameHandler(c *gin.Context) {
 		return
 	}
 
+	gim, err := h.gs.S_Create(gr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": err,
+		}) //biar kalo error servernya ga mati
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"judul": gi.Judul,
-		"harga": gi.Harga,
+		"data": gim,
 	})
 
 }
