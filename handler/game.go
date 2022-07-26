@@ -112,6 +112,37 @@ func (h *gameHandler) PostGameHandler(c *gin.Context) {
 	})
 
 }
+func (h *gameHandler) UpdateGame(c *gin.Context) {
+	var gr game.GameRequest
+	err := c.ShouldBindJSON(&gr)
+	if err != nil {
+		pesanErrors := []string{}
+		for _, j := range err.(validator.ValidationErrors) {
+			pesanError := fmt.Sprintf("Error di %s, kondisi: %s", j.Field(), j.ActualTag())
+			pesanErrors = append(pesanErrors, pesanError)
+
+		}
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": pesanErrors,
+		}) //biar kalo error servernya ga mati
+		return
+	}
+
+	idStr := c.Param("id")
+	id, _ := strconv.Atoi(idStr) //convert jadi id
+	gim, err := h.gs.S_Update(id, gr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": err,
+		}) //biar kalo error servernya ga mati
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": gim,
+	})
+
+}
 
 func convertkegameresponse(g game.Game) game.GameResponse {
 
