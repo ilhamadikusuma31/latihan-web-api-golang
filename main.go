@@ -29,6 +29,7 @@ func main() {
 	router := gin.Default()
 	v1 := router.Group("/v1")
 	v1.GET("/game", obj.GetGames)
+	v1.GET("/game/:id", obj.GetGame)
 	v1.POST("/game", obj.PostGameHandler)
 
 	router.Run()

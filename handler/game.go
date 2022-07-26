@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"net/http"
+	"strconv"
 	"web-api-golang/game"
 )
 
@@ -67,6 +68,31 @@ func (h *gameHandler) GetGames(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data": penampung,
 	})
+}
+
+func (h *gameHandler) GetGame(c *gin.Context) {
+	idStr := c.Param("id")
+	id, _ := strconv.Atoi(idStr) //convert jadi id
+	gim, err := h.gs.S_FindById(id)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors:": err,
+		})
+	}
+
+	gimResponse := game.GameResponse{
+		ID:         gim.ID,
+		Judul:      gim.Judul,
+		TahunRilis: gim.TahunRilis,
+		Harga:      gim.Harga,
+		Genre:      gim.Genre,
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": gimResponse,
+	})
+
 }
 
 func (h *gameHandler) PostGameHandler(c *gin.Context) {
